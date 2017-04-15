@@ -1,7 +1,5 @@
 <?php
 
-require_once "drive.php";
-
 function connect_database() {
     $user = 'root';
     $pass = '';
