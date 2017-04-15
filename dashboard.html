@@ -28,27 +28,32 @@
 
 		<pre id="content"></pre>
 
+        <main>
+            <table id="be-user-docs-list"></table>
+        </main>
+
 		<script type="text/javascript">
 
 			var check_user = function(user) {
-				console.log("checking user...");
-				console.log(user);
+				console.log("Checking user...");
 				$.post('backend/check_user.php', user, function (r) {
-					console.log(r);
 					if (r.count < 0) {
 						console.log("Sign in failed");
 					} else if (r.count < 1) {
 						console.log("User created");
-						create_base_folder();
+						create_base_folder(user.id);
 						upload_welcome_document(user.id);
+
+						list_user_files(user.id);
 					} else {
-						console.log("User signed in");
-						upload_welcome_document(user.id);
+						console.log("User signed in");;
+
+						list_user_files(user.id);
 					}
 				});
 			};
 
-			var create_base_folder = function() {
+			var create_base_folder = function(user_id) {
 				var body = {
 					mimeType: "application/vnd.google-apps.folder",
 					name: "BlockEdit_App_BaseFolder",
@@ -56,6 +61,12 @@
 				};
 				gapi.client.drive.files.create({'resource': body}).execute(function(response) {
 					console.log(response);
+					$.post('backend/add_base_folder.php', {
+						user_id: user_id,
+						base_folder_id: response.id
+					}, function(response) {
+						console.log("Adding base folder id to db... " + response.success);
+					});
 				});
 			};
 
@@ -105,6 +116,38 @@
 					});
 				});
 			};
+
+			var list_user_files = function(user_id) {
+				$.post('backend/get_users_files.php', {
+					user_id: user_id
+				}, function(response) {
+					console.log(response);
+                    var docs = response.data;
+                    var table = document.getElementById("be-user-docs-list");
+                    for (var doc in docs) {
+                        var row = document.createElement("tr");
+
+                        var title = document.createElement("td");
+                        title.innerHTML = docs[doc].title;
+                        row.appendChild(title);
+
+                        var edit = document.createElement("td");
+                        var editBtn = document.createElement("button");
+                        editBtn.innerHTML = "Edit";
+                        editBtn.onclick = function() {
+                            return handleEditBtn(docs[doc].document_id);
+                        };
+                        edit.appendChild(editBtn);
+                        row.appendChild(edit);
+
+                        table.appendChild(row);
+                    }
+				});
+			};
+
+			var handleEditBtn = function(document_id) {
+                console.log(document_id);
+            };
 
 
 			// Client ID and API key from the Developer Console
@@ -166,7 +209,7 @@
 
 					check_user(user);
 
-					listFiles();
+					listDriveFiles();
 				} else {
 					signinButton.style.display = 'block';
 					signoutButton.style.display = 'none';
@@ -202,10 +245,11 @@
 			/**
 			 * Print files.
 			 */
-			function listFiles() {
+			function listDriveFiles() {
 				gapi.client.drive.files.list({
 					'pageSize': 10,
-					'fields': "nextPageToken, files(id, name)"
+					'fields': "nextPageToken, files(id, name)",
+					'spaces': "appDataFolder"
 				}).then(function(response) {
 					appendPre('Files:');
 					var files = response.result.files;
