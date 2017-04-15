@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <title>BlockEdit - Login</title>
+
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+
+    <script data-main="js/page_login.js" src="js/lib/require.js"></script>
+
+    <!-- Google Sign-in data -->
+    <meta name="google-signin-client_id" content="473871398068-vvdtt4ltb7p5poc1nnn6hgb8hhb92ufv.apps.googleusercontent.com">
+    <script>
+        function renderButton() {
+            gapi.signin2.render('signin-btn', {
+                'scope': 'profile email https://www.googleapis.com/auth/drive',
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': function (user) {
+                    console.log("success!");
+                    window.logUserIn(user);
+                },
+                'onfailure': function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+
+    <script id="google-login-script" src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+</head>
+
+<body>
+
+    <header id="header">
+    </header>
+
+    <main>
+        <h1>Log in or sign up with Google</h1>
+        <div id="signin-btn"></div>
+        <p>Why Google? All documents created with BlockEdit are saved to your Google Drive, so we require you to log in with Google Auth so we can access your Drive.</p>
+
+    </main>
+
+</body>
+
+</html>
