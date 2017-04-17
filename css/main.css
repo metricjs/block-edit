@@ -1,0 +1,87 @@
+/* GENERAL STYLES */
+body, header, nav, main, section, div, span, p, ul, ol, li, table, tr, th, td, button {
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: #fdfdfd;
+    color: #333;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+button {
+    background-color: #e2e2e2;
+    border: 1px solid #ddd;
+    padding: 5px 10px 7px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* CENTER CONTENT */
+#main, #header-content {
+    width: 80%;
+    max-width: 1200px;
+    min-width: 400px;
+}
+
+#header-content {
+    margin: 0 auto;
+}
+
+#main {
+    margin: 10px auto;
+}
+
+/* HEADER STYLES */
+header {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+header, #header-content, nav, header span {
+    background-color: #f2f2f2;
+}
+
+header h1, header nav, header nav button {
+    display: inline-block;
+}
+
+header h1 {
+    margin: 0.2em 0;
+}
+
+header a, header a:visited, header button {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+header nav {
+    float: right;
+    margin: 0.5em 0;
+}
+
+header nav span, header nav button {
+    margin: 0 10px;
+}
+
+/* MAIN STYLES */
+
+

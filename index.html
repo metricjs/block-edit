@@ -2,13 +2,51 @@
 
 <html>
 	<head>
+		<title>BlockEdit - Home</title>
+
+		<meta charset="UTF-8">
+
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+
+		<script src="js/lib/jquery.js"></script>
+
+		<script type="text/javascript">
+
+			var initPageCode = function() {
+//				return checkUser();
+			};
+
+		</script>
+
 
 	</head>
 	
 	<body>
 	
 		<header id="header">
+			<div id="header-content">
+				<h1><a href="index.html">BlockEdit</a></h1>
+				<nav>
+					<span><a href="index.html">Home</a></span>
+					<span><a href="about.html">About</a></span>
+
+					<button id="signin-btn">Sign In</button>
+				</nav>
+			</div>
 		</header>
+
+		<main id="main">
+			<h1>Welcome to BlockEdit</h1>
+		</main>
+
+		<script src="js/gapiPublicPage.js"></script>
+		<script src="js/gapiBasic.js"></script>
+
+		<script async defer src="https://apis.google.com/js/api.js"
+				onload="this.onload=function(){}; handleClientLoad()"
+				onreadystatechange="if (this.readyState === 'complete') this.onload()">
+		</script>
 		
 	</body>
 

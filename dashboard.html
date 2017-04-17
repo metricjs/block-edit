@@ -7,267 +7,51 @@
 		<meta charset="UTF-8">
 
 		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-		<script src="js/lib/jquery.js"></script>
-		<script data-main="js/page_dashboard.js" src="js/lib/require.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
 
-		<!-- Google Sign-in data -->
-		<!--<meta name="google-signin-scope" content="profile email https://www.googleapis.com/auth/drive">-->
-		<!--<meta name="google-signin-client_id" content="473871398068-vvdtt4ltb7p5poc1nnn6hgb8hhb92ufv.apps.googleusercontent.com">-->
-		<!--<script id="google-login-script" src="https://apis.google.com/js/platform.js" async defer></script>-->
+		<script src="js/lib/jquery.js"></script>
+
+		<script src="js/dashboard.js"></script>
+
+		<script type="text/javascript">
+
+
+
+		</script>
+
 
 	</head>
 	
 	<body>
 
-		<header id="header">
-		</header>
+        <header>
+            <div id="header-content">
+                <h1><a href="index.html">BlockEdit</a></h1>
+                <nav>
+                    <span><a href="index.html">Home</a></span>
+                    <span><a href="about.html">About</a></span>
 
-		<!--Add buttons to initiate auth sequence and sign out-->
-		<button id="signin-button" style="display: none;">Sign In</button>
-		<button id="signout-button" style="display: none;">Sign Out</button>
+                    <button id="signout-btn">Sign Out</button>
+                </nav>
+            </div>
+        </header>
 
-		<pre id="content"></pre>
-
-        <main>
-            <table id="be-user-docs-list"></table>
+        <main id="main">
+            <section id="be-file-list-outer">
+                <div id="be-file-list-btns">
+                    <button id="be-file-list-new" class="be-file-list-btn-new">New</button>
+                    <button id="be-file-list-delete" class="be-file-list-btn-delete">Delete</button>
+                </div>
+                <table id="be-file-list"></table>
+            </section>
         </main>
 
-		<script type="text/javascript">
-
-			var check_user = function(user) {
-				console.log("Checking user...");
-				$.post('backend/check_user.php', user, function (r) {
-					if (r.count < 0) {
-						console.log("Sign in failed");
-					} else if (r.count < 1) {
-						console.log("User created");
-						create_base_folder(user.id);
-						upload_welcome_document(user.id);
-
-						list_user_files(user.id);
-					} else {
-						console.log("User signed in");;
-
-						list_user_files(user.id);
-					}
-				});
-			};
-
-			var create_base_folder = function(user_id) {
-				var body = {
-					mimeType: "application/vnd.google-apps.folder",
-					name: "BlockEdit_App_BaseFolder",
-					parents: ["appDataFolder"]
-				};
-				gapi.client.drive.files.create({'resource': body}).execute(function(response) {
-					console.log(response);
-					$.post('backend/add_base_folder.php', {
-						user_id: user_id,
-						base_folder_id: response.id
-					}, function(response) {
-						console.log("Adding base folder id to db... " + response.success);
-					});
-				});
-			};
-
-			var upload_welcome_document = function(user_id) {
-				var data = "<h1>Welcome to BlockEdit!</h1><p>This is a temporary welcome file.</p>";
-
-				upload_document("BlockEdit Welcome", data, user_id);
-			};
-
-			var upload_document = function(name, data, user_id) {
-				const boundary = '-------314159265358979323846';
-				const delimiter = "\r\n--" + boundary + "\r\n";
-				const close_delim = "\r\n--" + boundary + "--";
-
-				var contentType = "text/html";
-
-				var metadata = {
-					'mimeType': contentType,
-					'name': name,
-					'parents': []
-				};
-
-				var multipartRequestBody =
-						delimiter +  'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-						JSON.stringify(metadata) +
-						delimiter + 'Content-Type: ' + contentType + '\r\n' + '\r\n' +
-						data +
-						close_delim;
-
-				var request = gapi.client.request({
-					'path': '/upload/drive/v3/files',
-					'method': 'POST',
-					'params': {'uploadType': 'multipart'},
-					'headers': {
-						'Content-Type': 'multipart/related; boundary="' + boundary + '"'
-					},
-					'body': multipartRequestBody});
-
-				request.execute(function(response) {
-					console.log(response);
-					$.post('backend/add_document.php', {
-						user_id: user_id,
-						document_id: response.id,
-						title: response.name
-					}, function(response) {
-						console.log("Adding document to db... " + response.success);
-					});
-				});
-			};
-
-			var list_user_files = function(user_id) {
-				$.post('backend/get_users_files.php', {
-					user_id: user_id
-				}, function(response) {
-					console.log(response);
-                    var docs = response.data;
-                    var table = document.getElementById("be-user-docs-list");
-                    for (var doc in docs) {
-                        var row = document.createElement("tr");
-
-                        var title = document.createElement("td");
-                        title.innerHTML = docs[doc].title;
-                        row.appendChild(title);
-
-                        var edit = document.createElement("td");
-                        var editBtn = document.createElement("button");
-                        editBtn.innerHTML = "Edit";
-                        editBtn.onclick = function() {
-                            return handleEditBtn(docs[doc].document_id);
-                        };
-                        edit.appendChild(editBtn);
-                        row.appendChild(edit);
-
-                        table.appendChild(row);
-                    }
-				});
-			};
-
-			var handleEditBtn = function(document_id) {
-                console.log(document_id);
-            };
-
-
-			// Client ID and API key from the Developer Console
-			var CLIENT_ID = '473871398068-vvdtt4ltb7p5poc1nnn6hgb8hhb92ufv.apps.googleusercontent.com';
-
-			// Array of API discovery doc URLs for APIs used by the quickstart
-			var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-
-			// Authorization scopes required by the API; multiple scopes can be
-			// included, separated by spaces.
-			var SCOPES = 'profile https://www.googleapis.com/auth/drive.appdata';
-
-			var signinButton = document.getElementById('signin-button');
-			var signoutButton = document.getElementById('signout-button');
-
-			/**
-			 *  On load, called to load the auth2 library and API client library.
-			 */
-			function handleClientLoad() {
-				gapi.load('client:auth2', initClient);
-			}
-
-			/**
-			 *  Initializes the API client library and sets up sign-in state
-			 *  listeners.
-			 */
-			function initClient() {
-				gapi.client.init({
-					discoveryDocs: DISCOVERY_DOCS,
-					clientId: CLIENT_ID,
-					scope: SCOPES
-				}).then(function () {
-					// Listen for sign-in state changes.
-					gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-					// Handle the initial sign-in state.
-					updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-					signinButton.onclick = handleSigninClick;
-					signoutButton.onclick = handleSignoutClick;
-				});
-			}
-
-			/**
-			 *  Called when the signed in status changes, to update the UI
-			 *  appropriately. After a sign-in, the API is called.
-			 */
-			function updateSigninStatus(isSignedIn) {
-				if (isSignedIn) {
-					signinButton.style.display = 'none';
-					signoutButton.style.display = 'block';
-
-					var user = {};
-					var userInstance = gapi.auth2.getAuthInstance().currentUser.get();
-					user.token = userInstance.getAuthResponse().id_token;
-					user.id = userInstance.getId();
-					var profile = userInstance.getBasicProfile();
-					user.name = profile.getName();
-					user.email = profile.getEmail();
-
-					check_user(user);
-
-					listDriveFiles();
-				} else {
-					signinButton.style.display = 'block';
-					signoutButton.style.display = 'none';
-				}
-			}
-
-			/**
-			 *  Sign in the user upon button click.
-			 */
-			function handleSigninClick(event) {
-				gapi.auth2.getAuthInstance().signIn();
-			}
-
-			/**
-			 *  Sign out the user upon button click.
-			 */
-			function handleSignoutClick(event) {
-				gapi.auth2.getAuthInstance().signOut();
-			}
-
-			/**
-			 * Append a pre element to the body containing the given message
-			 * as its text node. Used to display the results of the API call.
-			 *
-			 * @param {string} message Text to be placed in pre element.
-			 */
-			function appendPre(message) {
-				var pre = document.getElementById('content');
-				var textContent = document.createTextNode(message + '\n');
-				pre.appendChild(textContent);
-			}
-
-			/**
-			 * Print files.
-			 */
-			function listDriveFiles() {
-				gapi.client.drive.files.list({
-					'pageSize': 10,
-					'fields': "nextPageToken, files(id, name)",
-					'spaces': "appDataFolder"
-				}).then(function(response) {
-					appendPre('Files:');
-					var files = response.result.files;
-					if (files && files.length > 0) {
-						for (var i = 0; i < files.length; i++) {
-							var file = files[i];
-							appendPre(file.name + ' (' + file.id + ')');
-						}
-					} else {
-						appendPre('No files found.');
-					}
-				});
-			}
-
-		</script>
+		<script src="js/gapiUserPage.js"></script>
+		<script src="js/gapiBasic.js"></script>
 
 		<script async defer src="https://apis.google.com/js/api.js"
-				onload="this.onload=function(){};handleClientLoad()"
+				onload="this.onload=function(){}; handleClientLoad()"
 				onreadystatechange="if (this.readyState === 'complete') this.onload()">
 		</script>
 

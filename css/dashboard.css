@@ -1,0 +1,53 @@
+#be-file-list-btns {
+    margin: 10px 0;
+}
+
+.be-file-list-btn-new {
+    /*background-color: rgba(68, 157, 68, 0.3);*/
+    /*border-color: rgba(68, 157, 68, 0.4);*/
+}
+
+.be-file-list-btn-edit {
+    /*background-color: rgba(2, 117, 216, 0.3);*/
+    /*border-color: rgba(2, 117, 216, 0.4);*/
+}
+
+.be-file-list-btn-delete {
+    /*background-color: rgba(201, 48, 44, 0.3);*/
+    /*border-color: rgba(201, 48, 44, 0.4);*/
+}
+
+#be-file-list {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#be-file-list th {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 10px 5px;
+    font-family: Verdana, Helvetica, sans-serif;
+}
+
+#be-file-list tr {
+    padding: 5px;
+}
+
+#be-file-list tr:nth-child(2n + 1) {
+    background-color: #eee;
+}
+
+#be-file-list td {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+#be-file-list td:first-child {
+    width: 30px;
+    text-align: center;
+}
+
+#be-file-list td button {
+    margin-right: 5px;
+}
