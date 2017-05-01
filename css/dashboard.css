@@ -2,6 +2,12 @@
     margin: 10px 0;
 }
 
+#be-new-details {
+    margin: 10px 0;
+    display: none;
+    visibility: hidden;
+}
+
 .be-file-list-btn-new {
     /*background-color: rgba(68, 157, 68, 0.3);*/
     /*border-color: rgba(68, 157, 68, 0.4);*/

@@ -1,0 +1,22 @@
+#be-edit-options {
+    margin: 20px 0;
+}
+
+#be-edit-breadcrumb {
+    margin: 0.5em 0;
+    display: inline-block;
+}
+
+#be-edit-mode-btns {
+    float: right;
+}
+
+#be-edit-mode-btns button {
+    margin: 0 10px;
+}
+
+.be-block {
+    border: 1px solid #f2f2f2;
+    padding: 10px;
+    margin: 20px 0;
+}

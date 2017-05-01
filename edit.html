@@ -8,14 +8,17 @@
 
         <link rel="stylesheet" type="text/css" href="css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+        <link rel="stylesheet" type="text/css" href="css/edit.css" />
 
         <script src="js/lib/jquery.js"></script>
+        <script src="js/lib/tinymce_4.5.7/js/tinymce/tinymce.min.js"></script>
 
-        <script src="js/dashboard.js"></script>
+        <script src="js/edit.js"></script>
 
         <script type="text/javascript">
-
+            var initPageCode = function() {
+                displayFile();
+            };
         </script>
 
     </head>
@@ -35,8 +38,18 @@
     </header>
 
     <main id="main">
-        <section id="be-file-list-outer">
-            <h1>Editing: </h1>
+        <section id="be-edit-options">
+            <p id="be-edit-breadcrumb"><a href="dashboard.html">Dashboard</a> &gt; <span id="be-edit-breadcrumb-file-title"></span></p>
+            <div id="be-edit-mode-btns">
+                <button id="be-edit-save">Save</button>
+                <button id="be-edit-mode-doc">Document Mode</button>
+                <button id="be-edit-mode-block">Block Mode</button>
+                <button id="be-edit-mode-tree">Tree Mode</button>
+            </div>
+        </section>
+        <section id="be-file-outer">
+            <h1 id="be-edit-file-title"></h1>
+            <div id="be-edit-file-contents"></div>
         </section>
     </main>
 

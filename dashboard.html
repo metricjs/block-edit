@@ -14,12 +14,16 @@
 
 		<script src="js/dashboard.js"></script>
 
-		<script type="text/javascript">
+        <script type="text/javascript">
+            var initPageCode = function() {
+                var details = document.getElementById("be-new-details");
+                details.style.display = "none";
+                details.style.visibility = "hidden";
+                assignMultiBtnHandlers();
+                checkUser();
+            };
 
-
-
-		</script>
-
+        </script>
 
 	</head>
 	
@@ -40,8 +44,12 @@
         <main id="main">
             <section id="be-file-list-outer">
                 <div id="be-file-list-btns">
-                    <button id="be-file-list-new" class="be-file-list-btn-new">New</button>
-                    <button id="be-file-list-delete" class="be-file-list-btn-delete">Delete</button>
+                    <button id="be-file-list-btn-new" class="be-file-list-btn-new">New</button>
+                    <button id="be-file-list-btn-multi-delete" class="be-file-list-btn-delete">Delete</button>
+                </div>
+                <div id="be-new-details">
+                    <input type="text" id="be-new-details-name" placeholder="File Name">
+                    <button type="submit" id="be-new-details-submit">Create</button>
                 </div>
                 <table id="be-file-list"></table>
             </section>

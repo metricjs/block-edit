@@ -1,8 +1,3 @@
-var initPageCode = function() {
-    console.log("Page inited!");
-    checkUser();
-};
-
 var checkUser = function() {
     console.log("Checking user...");
 
@@ -15,7 +10,7 @@ var checkUser = function() {
         } else {
             if (r.count < 1) {
                 console.log("User created");
-                var data = "<h1>Welcome to BlockEdit!</h1><p>This is a temporary welcome file.</p>";
+                var data = "<div class='be-block'><h1>Welcome to BlockEdit!</h1><p>This is a temporary welcome file.</p></div>";
                 createFile("BlockEdit Welcome", data, user.id);
             }
             console.log("User signed in");
@@ -25,18 +20,38 @@ var checkUser = function() {
 };
 
 var createFile = function(name, data, userId) {
-    var request = buildRequest("POST", data, name);
+    var gapiPromise = new Promise(function(resolve, reject) {
 
-    request.execute(function(response) {
-        console.log(response);
-        $.post('backend/add_document.php', {
-            user_id: userId,
-            document_id: response.id,
-            title: response.name
-        }, function(response) {
-            console.log("Adding document to db... " + response.success);
+        var createInDb = function(response) {
+            return new Promise(function (resolve, reject) {
+                $.post('backend/add_file.php', {
+                    user_id: userId,
+                    document_id: response.id,
+                    title: response.name
+                }, function (response) {
+                    if (response.success) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                });
+            });
+        };
+
+        var request = buildRequest("POST", data, name);
+
+        request.then(function(response) {
+            var dbPromise = createInDb(response.result);
+            dbPromise.then(function () {
+                resolve(response.result.id);
+            }, function () {
+                reject(response.result.id);
+            });
         });
+
     });
+
+    return gapiPromise;
 };
 
 var updateFile = function(fileId, data) {
@@ -127,6 +142,7 @@ var createFileTableRow = function(file) {
 
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.className = "be-file-list-box";
     checkbox.setAttribute("data-file-id", file.document_id);
     var checkboxCell = document.createElement("td");
     checkboxCell.appendChild(checkbox)
@@ -148,7 +164,7 @@ var createFileTableRow = function(file) {
     deleteBtn.innerHTML = "Delete";
     deleteBtn.className = "be-file-list-btn-delete";
     deleteBtn.onclick = function() {
-        return handleDeleteBtn(file.document_id);
+        return handleSingleDeleteBtn(file.document_id, row);
     };
     optionsCell.appendChild(deleteBtn);
     row.appendChild(optionsCell);
@@ -156,31 +172,98 @@ var createFileTableRow = function(file) {
     return row;
 };
 
+var assignMultiBtnHandlers = function() {
+    var newBtn = document.getElementById("be-file-list-btn-new");
+    var createBtn = document.getElementById("be-new-details-submit");
+    var deleteMultiBtn = document.getElementById("be-file-list-btn-multi-delete");
+
+    newBtn.onclick = function() {
+        return handleNewBtn();
+    };
+    createBtn.onclick = function() {
+        return handleCreateBtn();
+    };
+    deleteMultiBtn.onclick = function() {
+        return handleMultiDeleteBtn();
+    };
+};
+
+var handleNewBtn = function() {
+    var details = document.getElementById("be-new-details");
+    if (details.style.display === "none") {
+        details.style.display = "block";
+        details.style.visibility = "visible";
+    } else {
+        details.style.display = "none";
+        details.style.visibility = "hidden";
+    }
+};
+
+var handleCreateBtn = function() {
+    var filename = document.getElementById("be-new-details-name").value;
+    var newFileContent = "<div class='be-block'><p>Content here.</p></div>";
+    var user = getUser();
+    if (filename.length > 0) {
+        var promise = createFile(filename, newFileContent, user.id);
+        promise.then(function(fileId) {
+            console.log(fileId);
+            openFileToEdit(fileId);
+        }, function() {
+            console.log()
+            console.log("Creating file failed");
+        });
+
+    } else {
+        //TODO catch bad file name
+    }
+};
+
 var handleEditBtn = function(fileId) {
-    getFile(fileId);
+    openFileToEdit(fileId);
 };
 
-var handleDeleteBtn = function(fileId) {
-    deleteFile(fileId);
+var openFileToEdit = function(fileId) {
+    window.location = "edit.html?id=" + fileId;
 };
 
-var getFile = function(file_id) {
-    gapi.client.drive.files.get({
-        'fileId': file_id,
-        'alt': 'media'
-    }).then(function(response) {
-        // TODO: switch to edit mode
-        console.log("Got " + file_id);
-        console.log(response);
-    });
+var handleSingleDeleteBtn = function(fileId, tableRow) {
+    deleteFile(fileId, tableRow);
 };
 
-var deleteFile = function(file_id) {
+var handleMultiDeleteBtn = function() {
+    var fileData = getSelectedFiles();
+    for (var i = 0; i < fileData.fileIds.length; i++) {
+        deleteFile(fileData.fileIds[i], fileData.tableRows[i]);
+    }
+};
+
+var getSelectedFiles = function() {
+    var boxes = document.getElementsByClassName("be-file-list-box");
+    var fileIds = [];
+    var tableRows = [];
+    for (var i = 0; i < boxes.length; i++) {
+        if (boxes[i].checked) {
+            fileIds.push(boxes[i].getAttribute("data-file-id"));
+            tableRows.push(boxes[i].parentNode.parentNode); // tr > td > input
+        }
+    }
+    return { fileIds: fileIds, tableRows: tableRows };
+};
+
+var deleteFile = function(fileId, tableRow) {
     gapi.client.drive.files.delete({
-        'fileId': file_id
-    }).then(function(response) {
-        // TODO: delete from db too
-        console.log("Deleted " + file_id);
-        console.log(response);
+        'fileId': fileId
+    }).then(function() {
+        $.post('backend/delete_file.php', {
+            file_id: fileId
+        }, function () {
+            console.log("Deleted " + fileId + " from DB");
+        });
+        console.log("Deleted " + fileId + " from Google Drive");
+
+        tableRow.parentNode.removeChild(tableRow);
+    }, function() {
+        console.log("Error deleting file");
     });
+
 };

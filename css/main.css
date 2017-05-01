@@ -1,5 +1,5 @@
 /* GENERAL STYLES */
-body, header, nav, main, section, div, span, p, ul, ol, li, table, tr, th, td, button {
+body, header, nav, main, section, div, span, p, table, tr, th, td, button {
     font-family: Verdana, Helvetica, sans-serif;
     font-size: 14px;
     background-color: #fdfdfd;
@@ -32,6 +32,11 @@ button {
     padding: 5px 10px 7px 10px;
     border-radius: 3px;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #ccc;
+    border: 1px solid #c2c2c2;
 }
 
 /* CENTER CONTENT */
