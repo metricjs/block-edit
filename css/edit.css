@@ -15,8 +15,81 @@
     margin: 0 10px;
 }
 
+.be-edit-mode-active {
+    background-color: #ccc;
+}
+
 .be-block {
-    border: 1px solid #f2f2f2;
+    border: 1px solid #d2d2d2;
     padding: 10px;
     margin: 20px 0;
+}
+
+.be-edit-mode-block .be-block-lvl-2 {
+    margin-left: 1em;
+}
+
+.be-edit-mode-block .be-block-lvl-3 {
+    margin-left: 2em;
+}
+
+.be-edit-mode-block .be-block-lvl-4 {
+    margin-left: 3em;
+}
+
+.be-edit-mode-block .be-block-lvl-5 {
+    margin-left: 4em;
+}
+
+.be-edit-mode-block .be-block-lvl-6 {
+    margin-left: 5em;
+}
+
+.be-edit-mode-block .be-block-lvl-7 {
+    margin-left: 6em;
+}
+
+.be-edit-mode-block .be-block-lvl-8 {
+    margin-left: 7em;
+}
+
+.be-edit-mode-block .be-block-lvl-9 {
+    margin-left: 8em;
+}
+
+.be-edit-mode-block .be-block-lvl-10 {
+    margin-left: 9em;
+}
+
+#be-edit-file-contents.be-edit-mode-tree {
+    width: inherit;
+    overflow-x: auto;
+    display: table;
+}
+
+.be-edit-mode-tree .be-block {
+    height: 50px;
+    width: 300px;
+    margin: 10px 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.be-edit-mode-tree .be-block.be-block-lvl-1 + .be-block.be-block-lvl-1,
+.be-edit-mode-tree .be-block.be-block-lvl-2 + .be-block.be-block-lvl-2,
+.be-edit-mode-tree .be-block.be-block-lvl-3 + .be-block.be-block-lvl-3,
+.be-edit-mode-tree .be-block.be-block-lvl-4 + .be-block.be-block-lvl-4,
+.be-edit-mode-tree .be-block.be-block-lvl-5 + .be-block.be-block-lvl-5,
+.be-edit-mode-tree .be-block.be-block-lvl-6 + .be-block.be-block-lvl-6,
+.be-edit-mode-tree .be-block.be-block-lvl-7 + .be-block.be-block-lvl-7,
+.be-edit-mode-tree .be-block.be-block-lvl-8 + .be-block.be-block-lvl-8,
+.be-edit-mode-tree .be-block.be-block-lvl-9 + .be-block.be-block-lvl-9,
+.be-edit-mode-tree .be-block.be-block-lvl-10 + .be-block.be-block-lvl-10 {
+    clear: left;
+}
+
+.be-edit-mode-tree h1,
+.be-edit-mode-tree h2,
+.be-edit-mode-tree h3 {
+    font-size: 16px;
 }

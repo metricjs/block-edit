@@ -1,3 +1,74 @@
+var welcomeDocContents = function() {
+    var contents =
+        "<div class='be-block be-block-lvl-1'>" +
+        "<h1>Welcome to BlockEdit!</h1>" +
+        "<p>Ever wanted a writing app with more of a focus on document structure? I certainly have. I originally dreamed " +
+        "up BlockEdit when I was writing my thesis, because I found myself constantly needing to reorder the sections of " +
+        "my document as I added and removed parts. Copying and pasting sections inevitably ended with bits getting left " +
+        "behind, formatting getting messed up, and sometimes me realising I'd been right in the first place and having " +
+        "to move sections back again.</p>" +
+        "<p>I also often wished that there was an easier way to see the overall structure of a document at a glance. " +
+        "Document outlines using headings and such are a start, but they don't help as much if you have a couple pages " +
+        "of content under one heading.</p>" +
+        "<p>So ever since, I've been thinking about how a writing application could show the writer document structure " +
+        "more easily, and how to help writers with structuring their documents. Hence BlockEdit was born.</p>" +
+        "</div>";
+    contents +=
+        "<div class='be-block be-block-lvl-1'>" +
+        "<p>The key difference between BlockEdit and other writing applications is that every document is divided up into " +
+        "<strong>blocks</strong>. Each block has a light border around it to differentiate it from the other blocks, and " +
+        "when editing a document each block has its own editing toolbar (courtesy of TinyMCE), rather than there being one " +
+        "for the whole document. That toolbar also only appears when you click into a block, rather than always being " +
+        "visible. </p>" +
+        "<p>Blocks can contain any amount of content, from a single heading to pages of paragraphs. At the moment blocks " +
+        "can't contain images, though I plan to implement that in the future.</p>" +
+        "</div>";
+    contents +=
+        "<div class='be-block be-block-lvl-2'>" +
+        "<p>If you click into a block so the editing toolar appears, you'll notice some standard document formatting " +
+        "buttons plus some custom ones. These are: </p>" +
+        "<ul> " +
+            "<li>Add Block Above - Inserts a block above the currently active one</li>" +
+            "<li>Add Block Below - Inserts a block below the currently active one</li>" +
+            "<li>Increase Block Level - Increases the hierarchical level of the active block</li>" +
+            "<li>Decrease Block Level - Decreases the hierarchical level of the active block</li>" +
+            "<li>Delete Block - Does what it says. It does ask for confirmation though, since this can't be undo short " +
+            "of reloading the page without saving.</li>" +
+        "</ul>" +
+        "<p>The first two are pretty simple, but you're probably asking what <strong>block level</strong> is. </p>" +
+        "</div>";
+    contents +=
+        "<div class='be-block be-block-lvl-3'>" +
+        "<p>This is where being able to easily see document structure comes into it. At the top right of the page you'll " +
+        "see a few buttons. Save does the obvious, but the other three require a bit of explanation. </p>" +
+        "<ul> " +
+            "<li>Document Mode - The default mode that looks most like a traditional writing application, all blocks are " +
+            "displayed as if they have the same level. Allows editing of block content.</li>" +
+            "<li>Block Mode - Like document mode but each block is indented so far according to its level. The higher the " +
+            "level (up to the maximum level of 10), the further the block is indented. Allows editing of block content.</li>" +
+            "<li>Tree Mode - The only mode that doesn't allow editing of block content, this mode is purely for viewing " +
+            "the structur of a document. Small previews of each block's content are arranged such that each hierarchical " +
+            "level has it's own column and consecutive blocks with increasing levels are arranged in rows. Clicking a " +
+            "block in this mode will take you back to Document mode to allow you to edit it. </li>" +
+        "</ul>" +
+        "<p>Tree mode is the strangest of the three, so I would suggest having a play with it to figure it out.</p>" +
+        "</div>";
+    contents +=
+        "<div class='be-block be-block-lvl-1'>" +
+        "<p>That's about all there is to learn! I've tried to keep the application as simple as possible while also " +
+        "making it as useful as possible for its intended purposes; hopefully I've achieved that. There is certainly " +
+        "more yet to be done to make it a truly useful and polished application, but it's well on its way to being the " +
+        "writing application I dreamed of. </p>" +
+        "<p>- Millie Macdonald</p>" +
+        "</div>";
+
+    return contents;
+};
+
+var newDocContents = function() {
+    return "<div class='be-block be-block-lvl-1'><p>Content here.</p></div>";
+};
+
 var checkUser = function() {
     console.log("Checking user...");
 
@@ -10,7 +81,7 @@ var checkUser = function() {
         } else {
             if (r.count < 1) {
                 console.log("User created");
-                var data = "<div class='be-block'><h1>Welcome to BlockEdit!</h1><p>This is a temporary welcome file.</p></div>";
+                var data = welcomeDocContents();
                 createFile("BlockEdit Welcome", data, user.id);
             }
             console.log("User signed in");
@@ -40,6 +111,8 @@ var createFile = function(name, data, userId) {
 
         var request = buildRequest("POST", data, name);
 
+        console.log(request);
+
         request.then(function(response) {
             var dbPromise = createInDb(response.result);
             dbPromise.then(function () {
@@ -52,65 +125,6 @@ var createFile = function(name, data, userId) {
     });
 
     return gapiPromise;
-};
-
-var updateFile = function(fileId, data) {
-    var request = buildRequest("PATCH", data, fileId);
-
-    request.execute(function(response) {
-        console.log(response);
-    });
-};
-
-/**
- * Create file:
- * method path = POST /upload/drive/v3/files
- * has 'name' metadata field
- *
- * Update file:
- * method path = PATCH /upload/drive/v3/files/fileId
- * no 'name'
- *
- * fileRef is therefore either 'name' or 'fileId' depending on the method
- */
-var buildRequest = function(method, data, fileRef) {
-    const boundary = '-------314159265358979323846';
-    const delimiter = "\r\n--" + boundary + "\r\n";
-    const close_delim = "\r\n--" + boundary + "--";
-
-    var contentType = "text/html";
-
-    var metadata = {
-        'mimeType': contentType,
-        'parents': ["appDataFolder"]
-    };
-
-    if (method === "POST") {
-        metadata['name'] = fileRef;
-    }
-
-    var multipartRequestBody =
-        delimiter +  'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-        JSON.stringify(metadata) +
-        delimiter + 'Content-Type: ' + contentType + '\r\n' + '\r\n' +
-        data +
-        close_delim;
-
-    var request = gapi.client.request({
-        'path': '/upload/drive/v3/files',
-        'method': method,
-        'params': {'uploadType': 'multipart'},
-        'headers': {
-            'Content-Type': 'multipart/related; boundary="' + boundary + '"'
-        },
-        'body': multipartRequestBody
-    });
-
-    if (method === "PATCH") {
-        request['path'] += fileRef;
-    }
-
-    return request;
 };
 
 var listUserFiles = function(userId) {
@@ -201,7 +215,7 @@ var handleNewBtn = function() {
 
 var handleCreateBtn = function() {
     var filename = document.getElementById("be-new-details-name").value;
-    var newFileContent = "<div class='be-block'><p>Content here.</p></div>";
+    var newFileContent = newDocContents();
     var user = getUser();
     if (filename.length > 0) {
         var promise = createFile(filename, newFileContent, user.id);

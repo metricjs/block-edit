@@ -8,6 +8,7 @@
 
 		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
 
 		<script src="js/lib/jquery.js"></script>
 
@@ -29,15 +30,31 @@
 				<h1><a href="index.html">BlockEdit</a></h1>
 				<nav>
 					<span><a href="index.html">Home</a></span>
-					<span><a href="about.html">About</a></span>
-
 					<button id="signin-btn">Sign In</button>
 				</nav>
 			</div>
 		</header>
 
 		<main id="main">
-			<h1>Welcome to BlockEdit</h1>
+			<div id="banner-text">
+				<h1>BlockEdit</h1>
+				<p>The writing app with a focus on document structure.</p>
+			</div>
+			<img src="images/blockmode.png" />
+			<div id="blocks">
+				<div class="block">
+					<h2>Focus on structure</h2>
+					<p>Divide your documents into blocks and assign hierachy levels to them to make document structure more visible and restructuring easier.</p>
+				</div>
+				<div class="block">
+					<h2>Write with TinyMCE</h2>
+					<p>BlockEdit uses TinyMCE, the industry-leading editor plugin, so you get all the editing and formatting features you're used to.</p>
+				</div>
+				<div class="block">
+					<h2>Save to Google Drive</h2>
+					<p>Your documents are all saved to your own Google Drive, to minimise the risk of them being lost or being seen by someone else.</p>
+				</div>
+			</div>
 		</main>
 
 		<script src="js/gapiPublicPage.js"></script>

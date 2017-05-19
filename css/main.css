@@ -26,6 +26,10 @@ h3 {
     font-style: italic;
 }
 
+p {
+    margin-bottom: 1em;
+}
+
 button {
     background-color: #e2e2e2;
     border: 1px solid #ddd;

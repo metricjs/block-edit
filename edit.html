@@ -8,15 +8,22 @@
 
         <link rel="stylesheet" type="text/css" href="css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link rel="stylesheet" type="text/css" href="css/edit.css" />
+        <link rel="stylesheet" type="text/css" href="css/edit.css" title="editStyles" />
 
         <script src="js/lib/jquery.js"></script>
         <script src="js/lib/tinymce_4.5.7/js/tinymce/tinymce.min.js"></script>
 
+        <script src="js/gapiBasic.js"></script>
         <script src="js/edit.js"></script>
 
         <script type="text/javascript">
             var initPageCode = function() {
+                document.getElementById("be-edit-save").onclick = function() { return updateFile(); };
+
+                document.getElementById("be-edit-mode-doc").onclick = function() { return changeModeToDoc(); };
+                document.getElementById("be-edit-mode-block").onclick = function() { return changeModeToBlock(); };
+                document.getElementById("be-edit-mode-tree").onclick = function() { return changeModeToTree(); };
+
                 displayFile();
             };
         </script>
@@ -30,8 +37,6 @@
             <h1><a href="index.html">BlockEdit</a></h1>
             <nav>
                 <span><a href="index.html">Home</a></span>
-                <span><a href="about.html">About</a></span>
-
                 <button id="signout-btn">Sign Out</button>
             </nav>
         </div>
@@ -42,14 +47,14 @@
             <p id="be-edit-breadcrumb"><a href="dashboard.html">Dashboard</a> &gt; <span id="be-edit-breadcrumb-file-title"></span></p>
             <div id="be-edit-mode-btns">
                 <button id="be-edit-save">Save</button>
-                <button id="be-edit-mode-doc">Document Mode</button>
+                <button id="be-edit-mode-doc" class="be-edit-mode-active">Document Mode</button>
                 <button id="be-edit-mode-block">Block Mode</button>
                 <button id="be-edit-mode-tree">Tree Mode</button>
             </div>
         </section>
         <section id="be-file-outer">
             <h1 id="be-edit-file-title"></h1>
-            <div id="be-edit-file-contents"></div>
+            <div id="be-edit-file-contents" class="be-edit-mode-doc"></div>
         </section>
     </main>
 

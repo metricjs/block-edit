@@ -67,3 +67,52 @@ function getUser() {
 
     return user;
 }
+
+/**
+ * Create file:
+ * method path = POST /upload/drive/v3/files
+ * has 'name' metadata field
+ *
+ * Update file:
+ * method path = PATCH /upload/drive/v3/files/fileId
+ * no 'name'
+ *
+ * fileRef is therefore either 'name' or 'fileId' depending on the method
+ */
+var buildRequest = function(method, data, fileRef) {
+    const boundary = '-------314159265358979323846';
+    const delimiter = "\r\n--" + boundary + "\r\n";
+    const close_delim = "\r\n--" + boundary + "--";
+
+    var contentType = "text/html";
+
+    var metadata = {
+        'mimeType': contentType,
+    };
+
+    if (method === "POST") {
+        metadata['name'] = fileRef;
+        metadata['parents'] = ["appDataFolder"];
+    }
+
+    var multipartRequestBody =
+        delimiter +  'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+        JSON.stringify(metadata) +
+        delimiter + 'Content-Type: ' + contentType + '\r\n' + '\r\n' +
+        data +
+        close_delim;
+
+    var path = method === "POST" ? '/upload/drive/v3/files' : '/upload/drive/v3/files/' + fileRef;
+
+    var request = gapi.client.request({
+        'path': path,
+        'method': method,
+        'params': {'uploadType': 'multipart'},
+        'headers': {
+            'Content-Type': 'multipart/related; boundary="' + boundary + '"'
+        },
+        'body': multipartRequestBody
+    });
+
+    return request;
+};
