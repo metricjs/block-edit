@@ -47,7 +47,7 @@ button:hover {
 #main, #header-content {
     width: 80%;
     max-width: 1200px;
-    min-width: 400px;
+    min-width: 300px;
 }
 
 #header-content {
@@ -91,6 +91,18 @@ header nav span, header nav button {
     margin: 0 10px;
 }
 
-/* MAIN STYLES */
+@media (max-width: 450px) {
+    #be-file-list td:nth-child(3) {
+        text-align: center;
+    }
 
+    #be-file-list td:nth-child(3) button:first-child {
+        margin-bottom: 5px;
+    }
 
+    #header-content nav span {
+        display: none;
+        visibility: hidden;
+
+    }
+}

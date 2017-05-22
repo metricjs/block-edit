@@ -12,6 +12,7 @@
 
         <script src="js/lib/jquery.js"></script>
         <script src="js/lib/tinymce_4.5.7/js/tinymce/tinymce.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/Sortable/1.5.1/Sortable.min.js"></script>
 
         <script src="js/gapiBasic.js"></script>
         <script src="js/edit.js"></script>
@@ -25,6 +26,13 @@
                 document.getElementById("be-edit-mode-tree").onclick = function() { return changeModeToTree(); };
 
                 displayFile();
+
+                var blocks = document.getElementById('items');
+                var sortable = Sortable.create(document.getElementById('be-edit-file-contents'), {
+                    handle: '.be-block-handle',
+                    animation: 50,
+                    draggable: '.be-block'
+                });
             };
         </script>
 
@@ -44,7 +52,7 @@
 
     <main id="main">
         <section id="be-edit-options">
-            <p id="be-edit-breadcrumb"><a href="dashboard.html">Dashboard</a> &gt; <span id="be-edit-breadcrumb-file-title"></span></p>
+            <div id="be-edit-breadcrumb"><a href="dashboard.html">Dashboard</a> &gt; <span id="be-edit-breadcrumb-file-title"></span></div>
             <div id="be-edit-mode-btns">
                 <button id="be-edit-save">Save</button>
                 <button id="be-edit-mode-doc" class="be-edit-mode-active">Document Mode</button>

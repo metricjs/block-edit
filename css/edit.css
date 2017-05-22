@@ -7,22 +7,45 @@
     display: inline-block;
 }
 
+#be-edit-breadcrumb a:visited {
+    color: #333;
+}
+
 #be-edit-mode-btns {
-    float: right;
+    display: flex;
+    margin-top: 10px;
 }
 
 #be-edit-mode-btns button {
-    margin: 0 10px;
+    margin-right: 10px;
 }
 
 .be-edit-mode-active {
     background-color: #ccc;
+    border-color: #c5c5c5;
+}
+
+#be-edit-save {
+    width: 70px;
 }
 
 .be-block {
     border: 1px solid #d2d2d2;
-    padding: 10px;
     margin: 20px 0;
+    display: flex;
+    align-items: stretch;
+}
+
+.be-block-handle {
+    background-color: #d2d2d2;
+    flex-basis: 12px;
+    cursor: move;
+}
+
+.be-block-content {
+    flex-grow: 2;
+    flex-basis: auto;
+    padding: 10px;
 }
 
 .be-edit-mode-block .be-block-lvl-2 {
@@ -68,11 +91,15 @@
 }
 
 .be-edit-mode-tree .be-block {
-    height: 50px;
-    width: 300px;
+    height: 60px;
+    width: 52%;
     margin: 10px 10px;
     overflow: hidden;
     position: relative;
+}
+
+.be-edit-mode-tree .be-block .be-block-content * {
+    pointer-events: none;
 }
 
 .be-edit-mode-tree .be-block.be-block-lvl-1 + .be-block.be-block-lvl-1,
@@ -92,4 +119,5 @@
 .be-edit-mode-tree h2,
 .be-edit-mode-tree h3 {
     font-size: 16px;
+    margin: 5px 0;
 }

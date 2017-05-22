@@ -1,91 +1,119 @@
 var welcomeDocContents = function() {
     var contents =
         "<div class='be-block be-block-lvl-1'>" +
-        "<h1>Welcome to BlockEdit!</h1>" +
-        "<p>Ever wanted a writing app with more of a focus on document structure? I certainly have. I originally dreamed " +
-        "up BlockEdit when I was writing my thesis, because I found myself constantly needing to reorder the sections of " +
-        "my document as I added and removed parts. Copying and pasting sections inevitably ended with bits getting left " +
-        "behind, formatting getting messed up, and sometimes me realising I'd been right in the first place and having " +
-        "to move sections back again.</p>" +
-        "<p>I also often wished that there was an easier way to see the overall structure of a document at a glance. " +
-        "Document outlines using headings and such are a start, but they don't help as much if you have a couple pages " +
-        "of content under one heading.</p>" +
-        "<p>So ever since, I've been thinking about how a writing application could show the writer document structure " +
-        "more easily, and how to help writers with structuring their documents. Hence BlockEdit was born.</p>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<h1>Welcome to BlockEdit!</h1>" +
+                "<p>Ever wanted a writing app with more of a focus on document structure? I certainly have. I originally dreamed " +
+                "up BlockEdit when I was writing my thesis, because I found myself constantly needing to reorder the sections of " +
+                "my document as I added and removed parts. Copying and pasting sections inevitably ended with bits getting left " +
+                "behind, formatting getting messed up, and sometimes me realising I'd been right in the first place and having " +
+                "to move sections back again.</p>" +
+                "<p>I also often wished that there was an easier way to see the overall structure of a document at a glance. " +
+                "Document outlines using headings and such are a start, but they don't help as much if you have a couple pages " +
+                "of content under one heading.</p>" +
+                "<p>So ever since, I've been thinking about how a writing application could show the writer document structure " +
+                "more easily, and how to help writers with structuring their documents. Hence BlockEdit was born.</p>" +
+            "</div>" +
         "</div>";
     contents +=
         "<div class='be-block be-block-lvl-1'>" +
-        "<p>The key difference between BlockEdit and other writing applications is that every document is divided up into " +
-        "<strong>blocks</strong>. Each block has a light border around it to differentiate it from the other blocks, and " +
-        "when editing a document each block has its own editing toolbar (courtesy of TinyMCE), rather than there being one " +
-        "for the whole document. That toolbar also only appears when you click into a block, rather than always being " +
-        "visible. </p>" +
-        "<p>Blocks can contain any amount of content, from a single heading to pages of paragraphs. At the moment blocks " +
-        "can't contain images, though I plan to implement that in the future.</p>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<p>The key difference between BlockEdit and other writing applications is that every document is divided up into " +
+                "<strong>blocks</strong>. Each block has a light border around it to differentiate it from the other blocks, and " +
+                "when editing a document each block has its own editing toolbar (courtesy of TinyMCE), rather than there being one " +
+                "for the whole document. That toolbar also only appears when you click into a block, rather than always being " +
+                "visible. </p>" +
+                "<p>Blocks can contain any amount of content, from a single heading to pages of paragraphs. At the moment blocks " +
+                "can't contain images, though I plan to implement that in the future.</p>" +
+            "</div>" +
         "</div>";
     contents +=
         "<div class='be-block be-block-lvl-2'>" +
-        "<p>If you click into a block so the editing toolar appears, you'll notice some standard document formatting " +
-        "buttons plus some custom ones. These are: </p>" +
-        "<ul> " +
-            "<li>Add Block Above - Inserts a block above the currently active one</li>" +
-            "<li>Add Block Below - Inserts a block below the currently active one</li>" +
-            "<li>Increase Block Level - Increases the hierarchical level of the active block</li>" +
-            "<li>Decrease Block Level - Decreases the hierarchical level of the active block</li>" +
-            "<li>Delete Block - Does what it says. It does ask for confirmation though, since this can't be undo short " +
-            "of reloading the page without saving.</li>" +
-        "</ul>" +
-        "<p>The first two are pretty simple, but you're probably asking what <strong>block level</strong> is. </p>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<p>If you click into a block so the editing toolar appears, you'll notice some standard document formatting " +
+                "buttons plus some custom ones. These are: </p>" +
+                "<ul> " +
+                    "<li>Add Block Above - Inserts a block above the currently active one</li>" +
+                    "<li>Add Block Below - Inserts a block below the currently active one</li>" +
+                    "<li>Increase Block Level - Increases the hierarchical level of the active block</li>" +
+                    "<li>Decrease Block Level - Decreases the hierarchical level of the active block</li>" +
+                    "<li>Delete Block - Does what it says. It does ask for confirmation though, since this can't be undo short " +
+                    "of reloading the page without saving.</li>" +
+                "</ul>" +
+                "<p>The first two are pretty simple, but you're probably asking what <strong>block level</strong> is. </p>" +
+            "</div>" +
         "</div>";
     contents +=
         "<div class='be-block be-block-lvl-3'>" +
-        "<p>This is where being able to easily see document structure comes into it. At the top right of the page you'll " +
-        "see a few buttons. Save does the obvious, but the other three require a bit of explanation. </p>" +
-        "<ul> " +
-            "<li>Document Mode - The default mode that looks most like a traditional writing application, all blocks are " +
-            "displayed as if they have the same level. Allows editing of block content.</li>" +
-            "<li>Block Mode - Like document mode but each block is indented so far according to its level. The higher the " +
-            "level (up to the maximum level of 10), the further the block is indented. Allows editing of block content.</li>" +
-            "<li>Tree Mode - The only mode that doesn't allow editing of block content, this mode is purely for viewing " +
-            "the structur of a document. Small previews of each block's content are arranged such that each hierarchical " +
-            "level has it's own column and consecutive blocks with increasing levels are arranged in rows. Clicking a " +
-            "block in this mode will take you back to Document mode to allow you to edit it. </li>" +
-        "</ul>" +
-        "<p>Tree mode is the strangest of the three, so I would suggest having a play with it to figure it out.</p>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<p>This is where being able to easily see document structure comes into it. At the top right of the page you'll " +
+                "see a few buttons. Save does the obvious, but the other three require a bit of explanation. </p>" +
+                "<ul> " +
+                    "<li>Document Mode - The default mode that looks most like a traditional writing application, all blocks are " +
+                    "displayed as if they have the same level. Allows editing of block content.</li>" +
+                    "<li>Block Mode - Like document mode but each block is indented so far according to its level. The higher the " +
+                    "level (up to the maximum level of 10), the further the block is indented. Allows editing of block content.</li>" +
+                    "<li>Tree Mode - The only mode that doesn't allow editing of block content, this mode is purely for viewing " +
+                    "the structure of a document. You can only see so much of each block's content, but the level indenting is " +
+                    "more obvious. These block previews allow you to browse your document and find a certain block quickly. " +
+                    "Clicking a block in this mode will take you back to Document mode to allow you to edit it. </li>" +
+                "</ul>" +
+                "<p>Tree mode is the strangest of the three, so I would suggest having a play with it to figure it out.</p>" +
+            "</div>" +
         "</div>";
     contents +=
         "<div class='be-block be-block-lvl-1'>" +
-        "<p>That's about all there is to learn! I've tried to keep the application as simple as possible while also " +
-        "making it as useful as possible for its intended purposes; hopefully I've achieved that. There is certainly " +
-        "more yet to be done to make it a truly useful and polished application, but it's well on its way to being the " +
-        "writing application I dreamed of. </p>" +
-        "<p>- Millie Macdonald</p>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<p>Lastly, see that strip on the left of each block? That's a drag handler, that will let you drag and drop blocks " +
+                "to reorder them! This works particularly well in Tree mode, since the smaller preview blocks mean you don't have to " +
+                "scroll as far when you want to move a block up or down the page quite a bit. </p>" +
+            "</div>" +
+        "</div>";
+    contents +=
+        "<div class='be-block be-block-lvl-1'>" +
+            "<div class='be-block-handle'> </div>" +
+            "<div class='be-block-content'>" +
+                "<p>That's about all there is to learn! I've tried to keep the application as simple as possible while also " +
+                "making it as useful as possible for its intended purposes; hopefully I've achieved that. There is certainly " +
+                "more yet to be done to make it a truly useful and polished application, but it's well on its way to being the " +
+                "writing application I dreamed of. </p>" +
+                "<p>- Millie</p>" +
+            "</div>" +
         "</div>";
 
     return contents;
 };
 
 var newDocContents = function() {
-    return "<div class='be-block be-block-lvl-1'><p>Content here.</p></div>";
+    return "<div class='be-block be-block-lvl-1'>" +
+                "<div class='be-block-handle'> </div>" +
+                "<div class='be-block-content'>" +
+                    "<p>Content here.</p>" +
+                "</div>" +
+            "</div>";
 };
 
 var checkUser = function() {
-    console.log("Checking user...");
-
     var user = getUser();
 
     $.post('backend/check_user.php', user, function (r) {
         if (r.count < 0) {
-            console.log("Sign in failed");
-            // TODO: catch this
+            console.log("ERROR: Sign in failed");
         } else {
             if (r.count < 1) {
-                console.log("User created");
                 var data = welcomeDocContents();
-                createFile("BlockEdit Welcome", data, user.id);
+                createFile("BlockEdit Welcome", data, user.id)
+                .then(function(value) {
+                    listUserFiles(user.id);
+                });
+            } else {
+                listUserFiles(user.id);
             }
-            console.log("User signed in");
-            listUserFiles(user.id);
         }
     });
 };
@@ -110,8 +138,6 @@ var createFile = function(name, data, userId) {
         };
 
         var request = buildRequest("POST", data, name);
-
-        console.log(request);
 
         request.then(function(response) {
             var dbPromise = createInDb(response.result);
@@ -220,15 +246,13 @@ var handleCreateBtn = function() {
     if (filename.length > 0) {
         var promise = createFile(filename, newFileContent, user.id);
         promise.then(function(fileId) {
-            console.log(fileId);
             openFileToEdit(fileId);
         }, function() {
-            console.log()
-            console.log("Creating file failed");
+            console.log("ERROR: Creating file failed");
         });
 
     } else {
-        //TODO catch bad file name
+        // no file name - do nothing
     }
 };
 
@@ -271,13 +295,10 @@ var deleteFile = function(fileId, tableRow) {
         $.post('backend/delete_file.php', {
             file_id: fileId
         }, function () {
-            console.log("Deleted " + fileId + " from DB");
         });
-        console.log("Deleted " + fileId + " from Google Drive");
-
         tableRow.parentNode.removeChild(tableRow);
     }, function() {
-        console.log("Error deleting file");
+        console.log("ERROR: Error deleting file");
     });
 
 };

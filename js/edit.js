@@ -39,7 +39,7 @@ var displayFile = function() {
         fileTitleOuter.innerHTML = title;
         document.getElementById("be-edit-breadcrumb-file-title").innerHTML = title;
     }, function () {
-       console.log("Retrieving file title failed");
+       console.log("ERROR: Retrieving file title failed");
     });
 
     var fileDataPromise = getFile(fileId);
@@ -48,7 +48,7 @@ var displayFile = function() {
         fileContentsOuter.innerHTML = data.body;
         initTinyMCE();
     }, function () {
-        console.log("Retrieving file data failed");
+        console.log("ERROR: Retrieving file data failed");
     });
 
 };
@@ -60,57 +60,63 @@ var updateFile = function() {
     var request = buildRequest("PATCH", data, fileId);
 
     request.execute(function(response) {
-        console.log("File saved!");
-        // TODO display to user
+        changeBtnTextTemp(document.getElementById('be-edit-save'), 'Saved!', 'Save');
     });
 };
 
 var initTinyMCE = function() {
     tinymce.init({
-        selector: '.be-block',
+        selector: '.be-block-content',
         inline: true,
         plugins: ["advlist lists"],
         menubar: "",
-        toolbar: "undo redo | bold italic underline | styleselect | alignleft aligncenter alignright | bullist numlist | " +
-            "addBlockAbove addBlockBelow | increaseBlockLevel decreaseBlockLevel | deleteBlock",
+        toolbar: "undo redo | bold italic underline | styleselect | alignleft aligncenter alignright | bullist numlist " +
+            "indent outdent | addBlockAbove addBlockBelow | increaseBlockLevel decreaseBlockLevel | deleteBlock",
         setup: function (editor) {
-            editor.addButton('addBlockBelow', {
-                text: 'Add Block Below',
-                icon: false,
-                onclick: function () {
-                    addBlockBelow();
-                }
-            });
             editor.addButton('addBlockAbove', {
-                text: 'Add Block Above',
-                icon: false,
+                image: 'images/addAbove.svg',
+                tooltip: 'Add block above',
                 onclick: function () {
                     addBlockAbove();
                 }
             });
+            editor.addButton('addBlockBelow', {
+                image: 'images/addBelow.svg',
+                tooltip: 'Add block below',
+                onclick: function () {
+                    addBlockBelow();
+                }
+            });
             editor.addButton('increaseBlockLevel', {
-                text: 'Increase Block Level',
-                icon: false,
+                image: 'images/indent.svg',
+                tooltip: 'Increase block level',
                 onclick: function () {
                     increaseBlockLevel();
                 }
             });
             editor.addButton('decreaseBlockLevel', {
-                text: 'Decrease Block Level',
-                icon: false,
+                image: 'images/outdent.svg',
+                tooltip: 'Decrease block level',
                 onclick: function () {
                     decreaseBlockLevel();
                 }
             });
             editor.addButton('deleteBlock', {
-                text: 'Delete Block',
-                icon: false,
+                image: 'images/delete.svg',
+                tooltip: 'Delete block',
                 onclick: function() {
                     deleteBlock();
                 }
             });
         }
     });
+};
+
+var newBlockContent = function() {
+    return "<div class='be-block-handle'> </div>" +
+        "<div class='be-block-content'>" +
+        "<p>Content here.</p>" +
+        "</div>";
 };
 
 var addBlockBelow = function() {
@@ -122,12 +128,12 @@ var addBlockBelow = function() {
     // Insert new block after existing one
     var newBlock = document.createElement("div");
     newBlock.className = "be-block " + levelClass[0];
-    newBlock.innerHTML = "<p>Content here.</p>";
+    newBlock.innerHTML = newBlockContent();
     currentBlock.parentNode.insertBefore(newBlock, currentBlock.nextSibling);
 
     // Re-init Tiny
     initTinyMCE();
-    setEditorFocus(newBlock);
+    setEditorFocus(newBlock.getElementsByClassName('be-block-content')[0]);
 };
 
 var addBlockAbove = function() {
@@ -139,12 +145,12 @@ var addBlockAbove = function() {
     // Insert new block after existing one
     var newBlock = document.createElement("div");
     newBlock.className = "be-block " + levelClass[0];
-    newBlock.innerHTML = "<p>Content here.</p>";
+    newBlock.innerHTML = newBlockContent();
     currentBlock.parentNode.insertBefore(newBlock, currentBlock);
 
     // Re-init Tiny
     initTinyMCE();
-    setEditorFocus(newBlock);
+    setEditorFocus(newBlock.getElementsByClassName('be-block-content')[0]);
 };
 
 var increaseBlockLevel = function() {
@@ -163,7 +169,7 @@ var increaseBlockLevel = function() {
 
     // Re-init Tiny
     initTinyMCE();
-    setEditorFocus(currentBlock);
+    setEditorFocus(currentBlock.getElementsByClassName('be-block-content')[0]);
 };
 
 var decreaseBlockLevel = function() {
@@ -182,7 +188,7 @@ var decreaseBlockLevel = function() {
 
     // Re-init Tiny
     initTinyMCE();
-    setEditorFocus(currentBlock);
+    setEditorFocus(currentBlock.getElementsByClassName('be-block-content')[0]);
 };
 
 var deleteBlock = function() {
@@ -196,7 +202,7 @@ var deleteBlock = function() {
 };
 
 var getCurrentBlock = function() {
-    return tinymce.activeEditor.getBody();
+    return tinymce.activeEditor.getBody().parentNode;
 };
 
 var changeModeToDoc = function() {
@@ -264,16 +270,12 @@ var changeModeToTree = function() {
 };
 
 var setTreeModeMargins = function() {
-    var levelMargin = 50;
-    // levelMargin = Math.max(document.getElementById("be-edit-file-contents").offsetWidth / 10, 165);
-    // blocks are min 120 wide + 20 padding + 2 border
-
     var styleSheet = getStyleSheet("editStyles");
 
     [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function(levelNum) {
         var selector = ".be-edit-mode-tree .be-block.be-block-lvl-" + levelNum;
-        var margin = ((levelNum - 1) * levelMargin);
-        var rule = selector + "{ left: " + margin + "px; }";
+        var margin = (levelNum - 1) * 5;
+        var rule = selector + "{ left: " + margin + "%; }";
         styleSheet.insertRule(rule, levelNum - 2);
     });
 
@@ -296,7 +298,7 @@ var destroyAllEditors = function() {
 };
 
 var toggleTreeOnclicks = function(state) {
-    var blocks = document.getElementsByClassName("be-block");
+    var blocks = document.getElementsByClassName("be-block-content");
     [].forEach.call(blocks, function(block) {
         if (state) {
             $(block).on('click', function(event) {
@@ -310,12 +312,16 @@ var toggleTreeOnclicks = function(state) {
 
 var treeModeBlockOnClick = function(target) {
     toggleTreeOnclicks(false);
-
-    changeModeToDoc(); // TODO: set to last mode?
+    changeModeToDoc();
     initTinyMCE();
     setEditorFocus(target);
 };
 
-var setEditorFocus = function(block) {
-    tinymce.get(block.id).focus();
+var setEditorFocus = function(blockContent) {
+    tinymce.get(blockContent.id).focus();
+};
+
+var changeBtnTextTemp = function(button, tempText, defaultText) {
+    button.textContent = tempText;
+    setTimeout(function() { button.textContent = defaultText; }, 3000);
 };
