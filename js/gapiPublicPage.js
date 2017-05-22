@@ -8,8 +8,5 @@ function handleSigninBtn(event) {
 }
 
 function requiresRedirect(isSignedIn) {
-    if (window.location.pathname === "/infs3202-project/about.html") {
-        return false;
-    }
     return isSignedIn;
 }

@@ -29,8 +29,6 @@ function initClient() {
         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
         // Add handlers for sign in and out buttons
-        // signinBtn.onclick = handleSigninBtn;
-        // signoutBtn.onclick = handleSignoutBtn;
         btnHandlers();
 
         // Check user is signed or or not as appropriate for the page
@@ -41,9 +39,9 @@ function initClient() {
 function updateSigninStatus(isSignedIn) {
     if (requiresRedirect(isSignedIn)) {
         if (isSignedIn) {
-            window.location = "/infs3202-project/dashboard.html";
+            window.location = "dashboard.html";
         } else {
-            window.location = "/infs3202-project/index.html";
+            window.location = "index.html";
         }
     } else {
         initPageCode();

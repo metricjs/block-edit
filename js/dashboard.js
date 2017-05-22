@@ -101,7 +101,7 @@ var newDocContents = function() {
 var checkUser = function() {
     var user = getUser();
 
-    $.post('backend/check_user.php', user, function (r) {
+    $.post('check_user.php', user, function (r) {
         if (r.count < 0) {
             console.log("ERROR: Sign in failed");
         } else {
