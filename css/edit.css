@@ -38,6 +38,7 @@
 
 .be-block-handle {
     background-color: #d2d2d2;
+    width: 12px;
     flex-basis: 12px;
     cursor: move;
 }
@@ -85,8 +86,7 @@
 }
 
 #be-edit-file-contents.be-edit-mode-tree {
-    width: inherit;
-    overflow-x: auto;
+    width: 100%;
     display: table;
 }
 

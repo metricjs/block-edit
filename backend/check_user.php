@@ -23,11 +23,7 @@ if (isset($_POST['id'])) {
     if ($count < 1) {
         if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['email']) && isset($_POST['token'])) {
             create_user($_POST['id'], $_POST['name'], $_POST['email'], $_POST['token']);
-        } else {
-            $count = -1;
         }
-    } else {
-        update_user_last_login($_POST['id']);
     }
 }
 

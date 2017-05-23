@@ -101,21 +101,26 @@ var newDocContents = function() {
 var checkUser = function() {
     var user = getUser();
 
-    $.post('check_user.php', user, function (r) {
+    $.post('backend/check_user.php', user, function (r) {
+        console.log("r: " + r);
         if (r.count < 0) {
             console.log("ERROR: Sign in failed");
         } else {
+            console.log("Signed in!")
             if (r.count < 1) {
+                console.log("User is new!")
                 var data = welcomeDocContents();
                 createFile("BlockEdit Welcome", data, user.id)
                 .then(function(value) {
                     listUserFiles(user.id);
                 });
             } else {
+                console.log("Returning user");
                 listUserFiles(user.id);
             }
         }
     });
+    console.log("bypassed check_user");
 };
 
 var createFile = function(name, data, userId) {

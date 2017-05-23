@@ -1,9 +1,8 @@
 <?php
 
 function connect_database() {
-    $user = 'root';
-    $pass = '';
-    $db = new PDO('mysql:host=localhost;dbname=blockedit', $user, $pass) or die("Cannot open database");
+    $user = 'app';
+    $db = new PDO('mysql:host=localhost;dbname=blockedit', $user, '') or die("Cannot open database");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $db;
 }
@@ -22,20 +21,9 @@ function check_user($id) {
 
 function create_user($id, $name, $email, $token) {
     $db = connect_database();
-    $now = date("Y-m-d");
 
-    $query = $db->prepare("INSERT INTO users (id, name, email, token, account_created, last_login) VALUES (?, ?, ?, ?, ?, ?)");
-    $query->execute(array($id, $name, $email, $token, $now, $now));
-
-    return true;
-}
-
-function update_user_last_login($id) {
-    $db = connect_database();
-    $now = date("Y-m-d");
-
-    $query = $db->prepare("UPDATE users SET last_login = ? WHERE id = ?");
-    $query->execute(array($now, $id));
+    $query = $db->prepare("INSERT INTO users (id, name, email, token) VALUES (?, ?, ?, ?)");
+    $query->execute(array($id, $name, $email, $token));
 
     return true;
 }
