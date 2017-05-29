@@ -241,19 +241,28 @@ var handleNewBtn = function() {
 
 var handleCreateBtn = function() {
     var filename = document.getElementById("be-new-details-name").value;
-    var newFileContent = newDocContents();
-    var user = getUser();
-    if (filename.length > 0) {
-        var promise = createFile(filename, newFileContent, user.id);
+	var errorPara = document.getElementById("be-new-details-name-error");
+	var validChars = /^[0-9a-zA-Z]+$/; 
+	if (!filename.match(validChars) || filename.length < 1) {  
+		// Show the error paragraph and do nothing else
+		errorPara.style.display = "block";
+		errorPara.style.visibility = "visible";
+	} else {
+		// In case the first attempt failed, make sure the error paragraph is hidden.
+		errorPara.style.display = "none";
+		errorPara.style.visibility = "hidden";
+		
+		// Create new file
+		var newFileContent = newDocContents();
+		var user = getUser();
+		
+		var promise = createFile(filename, newFileContent, user.id);
         promise.then(function(fileId) {
             openFileToEdit(fileId);
         }, function() {
             console.log("ERROR: Creating file failed");
         });
-
-    } else {
-        // no file name - do nothing
-    }
+	}
 };
 
 var handleEditBtn = function(fileId) {
