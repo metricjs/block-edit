@@ -120,7 +120,6 @@ var checkUser = function() {
             }
         }
     });
-    console.log("bypassed check_user");
 };
 
 var createFile = function(name, data, userId) {
