@@ -31,16 +31,17 @@ p {
 }
 
 button {
-    background-color: #e2e2e2;
-    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    border: 1px solid #e2e2e2;
     padding: 5px 10px 7px 10px;
     border-radius: 3px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #ccc;
-    border: 1px solid #c2c2c2;
+    background-color: #03A9F4;
+    border: 1px solid #03A9F4;
+    color: white;
 }
 
 /* CENTER CONTENT */

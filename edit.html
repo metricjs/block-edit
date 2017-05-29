@@ -21,11 +21,12 @@
 
         <script type="text/javascript">
             var initPageCode = function() {
-                document.getElementById("be-edit-save").onclick = function() { return updateFile(); };
-
                 document.getElementById("be-edit-mode-doc").onclick = function() { return changeModeToDoc(); };
                 document.getElementById("be-edit-mode-block").onclick = function() { return changeModeToBlock(); };
                 document.getElementById("be-edit-mode-tree").onclick = function() { return changeModeToTree(); };
+
+                document.getElementById("be-edit-save").onclick = function() { return updateFile(); };
+                document.getElementById("be-edit-export").onclick = function() { return exportFile(); };
 
                 displayFile();
 
@@ -56,10 +57,11 @@
         <section id="be-edit-options">
             <div id="be-edit-breadcrumb"><a href="dashboard.html">Dashboard</a> &gt; <span id="be-edit-breadcrumb-file-title"></span></div>
             <div id="be-edit-mode-btns">
-                <button id="be-edit-save">Save</button>
                 <button id="be-edit-mode-doc" class="be-edit-mode-active">Document Mode</button>
                 <button id="be-edit-mode-block">Block Mode</button>
                 <button id="be-edit-mode-tree">Tree Mode</button>
+                <button id="be-edit-save">Save</button>
+                <button id="be-edit-export">Export as HTML</button>
             </div>
         </section>
         <section id="be-file-outer">

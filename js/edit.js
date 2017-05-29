@@ -325,3 +325,27 @@ var changeBtnTextTemp = function(button, tempText, defaultText) {
     button.textContent = tempText;
     setTimeout(function() { button.textContent = defaultText; }, 3000);
 };
+
+var exportFile = function() {
+    var data = encodeURI('data:text/html;charset=utf-8,'  + createExportData());
+    var title = document.getElementById("be-edit-file-title").innerHTML;
+
+    // Create a hidden link because files can only be downloaded from links
+    var link = document.createElement('a');
+    link.setAttribute('href', data);
+    link.setAttribute('download', title);
+    link.style.display = "hidden";
+    link.style.visibility = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+var createExportData = function() {
+    var blocks = document.getElementsByClassName("be-block-content");
+    var data = "";
+    for (var i = 0; i < blocks.length; i++) {
+        data += blocks[0].innerHTML;
+    }
+    return data;
+};
