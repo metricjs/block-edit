@@ -107,7 +107,7 @@ var checkUser = function() {
         } else {
             if (r.count < 1) {
                 var data = welcomeDocContents();
-                createFile("BlockEdit Welcome", data, user.id)
+                createFile("Welcome to BlockEdit!", data, user.id)
                 .then(function(value) {
                     listUserFiles(user.id);
                 });
@@ -242,7 +242,7 @@ var handleNewBtn = function() {
 var handleCreateBtn = function() {
     var filename = document.getElementById("be-new-details-name").value;
 	var errorPara = document.getElementById("be-new-details-name-error");
-	var validChars = /^[0-9a-zA-Z]+$/; 
+	var validChars = /^[a-zA-Z0-9 "!?.-]+$/;
 	if (!filename.match(validChars) || filename.length < 1) {  
 		// Show the error paragraph and do nothing else
 		errorPara.style.display = "block";
